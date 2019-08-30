@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   proxy:
@@ -17,11 +17,8 @@ services:
       --logLevel=DEBUG
   slowmo:
     image: mernat/slowmo:latest
-    container_name: slowmoSocket
     labels:
       - "traefik.backend.rule=Host:slowmo.localhost"
-      - "traefik.port=8080"
+      - "traefik.port=9090"
       - "traefik.entrypoints=http"
-    ports:
-      - "8080:9090"
     restart: always
