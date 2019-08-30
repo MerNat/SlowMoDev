@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  proxy:
+    image: traefik:alpine
+    container_name: myProxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "80:80"
+      - "8081:8080"
+    command:
+      --web
+      --docker
+      --docker.domain=proxy.localhost
+      --docker.watch
+      --logLevel=DEBUG
+  slowmo:
+    image: mernat/slowmo:latest
+    container_name: slowmoSocket
+    labels:
+      - "traefik.backend.rule=Host:slowmo.localhost"
+      - "traefik.port=8080"
+      - "traefik.entrypoints=http"
+    ports:
+      - "8080:9090"
+    restart: always
